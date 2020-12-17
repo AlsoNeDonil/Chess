@@ -1,4 +1,4 @@
-program chess;
+﻿program chess;
 uses GraphABC;
 
 const
@@ -18,7 +18,7 @@ begin
      end;
 end;
 
-procedure draw_desk(c : System.Drawing.Color);
+procedure draw_desk();
 var
    i, j, c : integer;
 begin
@@ -27,7 +27,7 @@ begin
          for j := 1 to 8 do begin
 
              if c = 1 then SetBrushColor(clWhite)
-             else SetBrushColor(clBlack);
+             else SetBrushColor(clBrown);
 
              Rectangle(j * 64, i * 64, j * 64 + 64, i * 64 + 64);
              c := c * -1;
@@ -37,20 +37,22 @@ begin
     end;
 end;
 
-procedure draw_pesh(x, y : integer);
+procedure draw_pesh(x, y : integer; c : Color);
 begin
      SetPenColor(clBlack);
-     SetBrushColor(clBrown);
-     SetBrushStyle(bsSolid);
+     SetBrushColor(c);
+
      Rectangle(x + 30, y + 25, x + 36, y + 50);
      Circle(x + 33, y + 20, 10);
      Rectangle(x + 20, y + 30, x + 44, y + 35);
      Rectangle(x + 20, y + 48, x + 44, y + 55);
 end;
 
-procedure draw_lad(x, y : integer);
+procedure draw_lad(x, y : integer; c : Color);
 begin
      SetPenColor(clBlack);
+     SetBrushColor(c);
+
      Rectangle(x + 15, y + 48, x + 50, y + 55);
      Rectangle(x + 30, y + 25, x + 36, y + 50);
      Rectangle(x + 15, y + 25, x + 50, y + 35);
@@ -60,24 +62,25 @@ begin
      Rectangle(x + 42, y + 10, x + 50, y + 25);
 end;
 
-procedure draw_horse(x, y : integer);
+procedure draw_horse(x, y : integer; c : Color);
 begin
      SetPenColor(clBlack);
-     SetBrushColor(clBrown);
+     SetBrushColor(c);
+
      Rectangle(x + 15, y + 48, x + 50, y + 55);
      Rectangle(x + 18, y + 49, x + 30, y + 12);
      Rectangle(x + 29, y + 12, x + 45, y + 30);
-     SetBrushColor(clBlack);
+    
      Line(x + 18, y + 20, x + 25, y + 20);
      Line(x + 18, y + 25, x + 25, y + 25);
      Line(x + 18, y + 30, x + 25, y + 30);
 end;
 
-procedure draw_elephant(x, y : integer);
+procedure draw_elephant(x, y : integer; c : Color);
 begin
      SetPenColor(clBlack);
-     SetBrushStyle(bsSolid);
-     SetBrushColor(clBrown);
+     SetBrushColor(c);
+
      Rectangle(x + 30, y + 25, x + 36, y + 50);
      Circle(x + 33, y + 20, 10);
      Circle(x + 33, y + 7, 5);
@@ -85,9 +88,11 @@ begin
      Rectangle(x + 20, y + 48, x + 44, y + 55);
 end;
 
-procedure draw_king(x, y : integer);
+procedure draw_king(x, y : integer; c : Color);
 begin
      SetPenColor(clBlack);
+     SetBrushColor(c);
+
      Rectangle(x + 10, y + 45, x + 54, y + 52);
      Ellipse(x + 2, y + 30, x + 32, y + 45);
      Ellipse(x + 32, y + 30, x + 62, y + 45);
@@ -96,9 +101,9 @@ begin
      Rectangle(x + 28, y + 4, x + 38, y + 5);
 end;
 
-procedure draw_queen(x, y : integer);
+procedure draw_queen(x, y : integer; c : Color);
 begin
-     SetPenColor(clBrown);
+     SetPenColor(clBlack);
      Line(x + 7, y + 54, x + 56, y + 54);
 
      Line(x + 7, y + 9, x + 7, y + 54);
@@ -108,7 +113,7 @@ begin
      Line(x + 20, y + 29, x + 30, y + 9);
      Line(x + 30, y + 9, x + 42, y + 29);
      Line(x + 42, y + 29, x + 56, y + 9);
-     floodfill(x + 10, y + 40, clBrown);
+     floodfill(x + 10, y + 40, c);
 end;
 
 var
@@ -121,30 +126,34 @@ BEGIN
     draw_desk();
     
     for i := 1 to 8 do begin
-        draw_pesh(64 * i, 64 * 2);
-        draw_pesh(64 * i, 64 * 7);
+        draw_pesh(64 * i, 64 * 2, clWhite);
+        draw_pesh(64 * i, 64 * 7, clBlack);
     end;
     
-    draw_lad(1 * 64, 1 * 64);
-    draw_lad(1 * 64, 8 * 64);
+    // draw white figures
+    draw_lad(1 * 64, 1 * 64, clWhite);
+    draw_lad(8 * 64, 1 * 64, clWhite);
     
-    draw_lad(8 * 64, 8 * 64);
-    draw_lad(8 * 64, 1 * 64);
-    
-    draw_horse(2 * 64, 1 * 64);
-    draw_horse(7 * 64, 1 * 64);
-    draw_horse(2 * 64, 8 * 64);
-    draw_horse(7 * 64, 8 * 64);
+    draw_horse(2 * 64, 1 * 64, clWhite);
+    draw_horse(7 * 64, 1 * 64, clWhite);
 
-    draw_elephant(3 * 64, 1 * 64);
-    draw_elephant(6 * 64, 1 * 64);
-    draw_elephant(3 * 64, 8 * 64);
-    draw_elephant(6 * 64, 8 * 64);
+    draw_elephant(3 * 64, 1 * 64, clWhite);
+    draw_elephant(6 * 64, 1 * 64, clWhite);
+
+    draw_king(4 * 64, 1 * 64, clWhite);
+    draw_queen(5 * 64, 1 * 64, clWhite);
+
+    //draw black figures
+    draw_lad(1 * 64, 8 * 64, clBlack);
+    draw_lad(8 * 64, 8 * 64, clBlack);
     
-    draw_king(4 * 64, 1 * 64);
-    draw_queen(5 * 64, 1 * 64);
+    draw_horse(2 * 64, 8 * 64, clBlack);
+    draw_horse(7 * 64, 8 * 64, clBlack);
     
-    draw_king(4 * 64, 8 * 64);
-    draw_queen(5 * 64, 8 * 64);
+    draw_elephant(3 * 64, 8 * 64, clBlack);
+    draw_elephant(6 * 64, 8 * 64, clBlack);
+    
+    draw_king(4 * 64, 8 * 64, clBlack);
+    draw_queen(5 * 64, 8 * 64, clBlack);
 
 END.
